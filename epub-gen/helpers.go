@@ -18,15 +18,32 @@
 
 package epub_gen
 
-type bookInfo struct {
-	Title      string
-	UUID       string
-	CreateTime string
-	Objects    []int
-	TocNodes   []toc
+import (
+	"time"
+)
+
+func NewGen() *Gen {
+	return &Gen{
+		// Book Info
+		bi: bookInfo{UUID: randUUID(), CreateTime: time.Now().Format(time.RFC3339)},
+		// Table of Contents
+		tocNum: 1, imgList: make([]string, 0), tocNodes: make([]toc, 0),
+		// Image settings
+		x: 720, Grey: true, quality: 80,
+	}
+}
+func inRange(in, min, max int) int {
+	if in <= min {
+		return min
+	} else if in >= max {
+		return max
+	} else {
+		return in
+	}
 }
 
-type pageInfo struct {
-	ID    int
-	Title string
+type toc struct {
+	ID   int
+	Pic  int
+	Name string
 }
